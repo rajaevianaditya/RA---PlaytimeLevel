@@ -36,6 +36,7 @@ Key features:
 - Progressive level system (Level 1–100, ~1440 hours total at 8h/day = ~6 months)
 - Fully configurable rewards per level (commands, messages, broadcast)
 - One-time claimable rewards — players can also claim manually
+- **Level color system** — each level range has a configurable color, fully editable from `config.yml`
 - PlaceholderAPI support with 20+ placeholders
 - EssentialsX integration with Bukkit Statistics fallback
 - Separate messages.yml for easy localization
@@ -262,6 +263,10 @@ placeholder:
   # Format used when player is at max level
   max-level-format: "§6§l[ §eMAX §6§l] §f§l|"
 
+  # Format used by %playtimelevel_level_color_formatted%
+  # %color% diganti warna otomatis dari level-colors, %level% diganti angka level
+  level-color-format: "%color%[ %level% ] §f§l|"
+
   progress-bar:
     length: 10          # Total number of characters in the bar
     filled: "§a▊"       # Character for completed portion
@@ -275,6 +280,56 @@ placeholder:
 storage:
   type: "file"          # Only "file" is fully implemented; "mysql" is planned
   file: "data.yml"
+
+# ============================================================
+# Level Color Settings
+# Setiap entry mendefinisikan warna untuk range level tertentu.
+#   min   : level minimum (inklusif)
+#   max   : level maksimum (inklusif)
+#   color : kode warna Minecraft (§0–§f)
+#
+# Kode warna Minecraft:
+#   §0 Hitam    §1 Dark Blue   §2 Dark Green  §3 Dark Aqua
+#   §4 Dark Red §5 Ungu        §6 Emas        §7 Abu-abu
+#   §8 Dark Gray §9 Biru       §a Hijau       §b Aqua
+#   §c Merah    §d Pink        §e Kuning      §f Putih
+#
+# Urutan dicek dari atas ke bawah — entry pertama yang cocok dipakai.
+# ============================================================
+level-colors:
+  - min: 1
+    max: 9
+    color: "§7"
+  - min: 10
+    max: 19
+    color: "§f"
+  - min: 20
+    max: 29
+    color: "§6"
+  - min: 30
+    max: 39
+    color: "§b"
+  - min: 40
+    max: 49
+    color: "§a"
+  - min: 50
+    max: 59
+    color: "§3"
+  - min: 60
+    max: 69
+    color: "§4"
+  - min: 70
+    max: 79
+    color: "§d"
+  - min: 80
+    max: 89
+    color: "§9"
+  - min: 90
+    max: 99
+    color: "§5"
+  - min: 100
+    max: 100
+    color: "§e"
 ```
 
 ---
@@ -353,8 +408,13 @@ Requires **PlaceholderAPI** to be installed. All placeholders use the prefix `%p
 | `%playtimelevel_total_max_level%` | Total hours to reach max level | `1440.0` |
 | `%playtimelevel_total_max_level_formatted%` | Formatted version | `1440.0 hours` |
 | `%playtimelevel_reward_claimed_<level>%` | Whether reward for a level is claimed | `true` / `false` |
+| `%playtimelevel_level_color%` | Minecraft color code untuk level saat ini | `§6` |
+| `%playtimelevel_level_colored%` | Angka level dengan kode warnanya | `§625` |
+| `%playtimelevel_level_color_formatted%` | Level dengan format & warna dari config (`level-color-format`) | `§6[ 25 ] §f§l|` |
 
 > **Example:** `%playtimelevel_reward_claimed_10%` returns `true` if the player has claimed level 10's reward.
+
+> **Example:** `%playtimelevel_level_color%` returns `§6` for a player at level 20–29 (Gold range). Use it to colorize any text based on the player's level.
 
 ### Usage Examples
 
@@ -368,6 +428,21 @@ Next in: %playtimelevel_next_level_in_hours%h
 **Tab list prefix:**
 ```
 %playtimelevel_level_formatted% %player_name%
+```
+
+**Colored level number (menggunakan warna dari `level-colors` di config):**
+```
+Level: %playtimelevel_level_colored%
+```
+
+**Level formatted dengan warna otomatis (pengganti `level_formatted` yang warnanya dinamis):**
+```
+Level: %playtimelevel_level_color_formatted%
+```
+
+**Custom colored text berdasarkan level:**
+```
+%playtimelevel_level_color%Level %playtimelevel_level% §r— %playtimelevel_playtime_hours%h played
 ```
 
 ---
@@ -499,3 +574,6 @@ If it says "Failed to register", try running `/papi reload` then `/level reload`
 **Q: Can I use color codes in messages.yml?**  
 A: Yes. Use `§` followed by a color code (e.g. `§a` for green, `§6` for gold, `§l` for bold).
 Standard Minecraft color codes are fully supported.
+
+**Q: Bagaimana cara mengubah warna level?**  
+A: Edit section `level-colors` di `config.yml`. Setiap entry mendefinisikan range level (`min`–`max`) dan kode warna Minecraft (`color`). Setelah selesai, jalankan `/level reload` — tidak perlu restart server. Warna ini juga otomatis dipakai oleh placeholder `%playtimelevel_level_color%` dan `%playtimelevel_level_colored%`.

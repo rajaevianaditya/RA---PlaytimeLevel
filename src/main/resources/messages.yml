@@ -1,0 +1,57 @@
+# Placeholders: %player%, %level%, %current_level%
+
+# General command messages
+no-permission: "§cYou don't have permission!"
+player-not-found: "§cPlayer §e%player% §cnot found!"
+player-not-online: "§cPlayer §e%player% §cis not online!"
+reload-success: "§aConfiguration reloaded successfully!"
+
+# Level messages
+max-level-reached: "§6§lMAX LEVEL! §eYou have reached the highest level!"
+
+# Reward messages
+reward-received: "§a§lREWARD! §eYou received level %level% rewards!"
+reward-already-claimed: "§cYou have already claimed reward for level %level%"
+reward-no-rewards: "§cNo rewards available for level %level%"
+reward-level-not-reached: "§cYou haven't reached level %level% yet! Your current level is %current_level%"
+
+# Reset messages
+reset-success: "§a✓ Successfully reset reward data for §e%player%"
+
+# Stats display - own player
+self-stats: |
+  §e=== §6Level Stats §e===
+  §bLevel: §f%level%
+  §bPlaytime: §f%playtime_hours% hours
+  §bProgress: §f%progress_percent%%
+  %progress_bar%
+  §bTo Level §f%next_level%: §f%next_level_in% hours
+  §bRequired for Level §f%next_level%: §f%required_for_next% hours
+  %max_level_message%
+
+# Stats display - other player
+other-stats: |
+  §e=== §6Level Stats §e%player% §e===
+  §bLevel: §f%level%
+  §bPlaytime: §f%playtime_hours% hours
+  §bProgress: §f%progress_percent%%
+  %progress_bar%
+  §bTo Level §f%next_level%: §f%next_level_in% hours
+  §bRequired for Level §f%next_level%: §f%required_for_next% hours
+  %max_level_message%
+
+# Help messages
+help-header: "§6=== §ePlaytimeLevel Commands §6==="
+help-basic: |
+  §e/level §7- Check your level and stats
+  §e/level info §7- Detailed level progression info
+  §e/level rewards §7- View available rewards
+  §e/level claim <level|all> §7- Claim level reward(s)
+help-admin: |
+  §e/level check <player> §7- Check another player's level
+  §e/level reset <player> §7- Reset player reward data
+  §e/level reload §7- Reload configuration
+help-info: |
+  §7Level System: §bProgressive §7(3.02 → 39.67 hours per level)
+  §7Max Level: §6100 §7(§e~1440 hours total§7)
+  §7Use §e/level claim all §7to claim all eligible rewards at once!
